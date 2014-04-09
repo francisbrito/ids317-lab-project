@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="IDS317-FinalProject" default="build" basedir=".">
+    <description>Builds, tests, and runs the final project.</description>
+    <property name="src.dir" location="./src" />
+    <property name="lib.dir" location="./lib" />
+    <property name="test.dir" location="./test" />
+    <property name="build.dir" location="./build" />
+    <property name="archive.dir" location="./archive" />
+    <property name="classes.dir" location="${build.dir}/src/classes" />
+    <property name="test.classes.dir" location="${build.dir}/test/classes" />
+    <path id="test.classpath">
+      <pathelement location="${lib.dir}/junit-4.11.jar" />
+      <pathelement location="${lib.dir}/hamcrest-core-1.3.jar" />
+      <pathelement location="${classes.dir}" />
+      <pathelement location="${test.classes.dir}" />
+    </path>
+    <target name="clean">
+      <delete dir="${build.dir}" />
+      <delete dir="${archive.dir}" />
+    </target>
+    <target name="prepare" depends="clean">
+      <tstamp/>
+      <mkdir dir="${build.dir}" />
+      <mkdir dir="${classes.dir}" />
+      <mkdir dir="${archive.dir}" />
+    </target>
+    <target name="compile" depends="prepare">
+      <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false" />
+    </target>
+    <target name="build" depends="compile">
+      <jar destfile="${archive.dir}/${ant.project.name}-${DSTAMP}.jar" basedir="${classes.dir}" />
+    </target>
+    <target name="test" depends="clean, build">
+      <mkdir dir="${test.classes.dir}" />
+      <javac srcdir="${test.dir}" destdir="${test.classes.dir}" includeantruntime="false">
+        <classpath refid="test.classpath" />
+      </javac>
+      <junit haltonfailure="true">
+        <formatter type="plain" usefile="false" />
+        <classpath refid="test.classpath" />
+        <batchtest fork="yes">
+          <fileset dir="${test.dir}">
+            <include name="**/*Test.java" />
+          </fileset>
+        </batchtest>
+      </junit>
+    </target>
+</project>
