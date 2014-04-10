@@ -10,27 +10,54 @@ public abstract class SimpleDateUtility {
     }
 
     public static SimpleDate moveAYear(SimpleDate date) {
-        int year = date.getYear();
-
-        date.setYear(year + 1);
-
-        return date;
-    }
-
-    public static SimpleDate moveAMonth(SimpleDate date) {
+        int day = date.getDay();
         int month = date.getMonth();
         int year = date.getYear();
 
+        SimpleDate result = new SimpleDate(day, month, year);
+
+        result.setYear(year + 1);
+
+        return result;
+    }
+
+    public static SimpleDate moveYearBy(SimpleDate date, int years) {
+        SimpleDate result = date;
+
+        for (int i = 1; i <= years; i++) {
+            result = moveAYear(result);
+        }
+
+        return result;
+    }
+
+    public static SimpleDate moveAMonth(SimpleDate date) {
+        int day = date.getDay();
+        int month = date.getMonth();
+        int year = date.getYear();
+
+        SimpleDate result = new SimpleDate(day, month, year);
+
         if (month == Month.DECEMBER.getValue()) {
-            date = moveAYear(date);
+            result = moveAYear(result);
             month = 1;
         } else {
             month++;
         }
 
-        date.setMonth(month);
+        result.setMonth(month);
 
-        return date;
+        return result;
+    }
+
+    public static SimpleDate moveMonthBy(SimpleDate date, int months) {
+        SimpleDate result = date;
+
+        for (int i = 1; i <= months; i++) {
+            result = moveAMonth(result);
+        }
+
+        return result;
     }
 
     public static SimpleDate moveADay(SimpleDate date) {
@@ -38,16 +65,28 @@ public abstract class SimpleDateUtility {
         int month = date.getMonth();
         int year = date.getYear();
 
+        SimpleDate result = new SimpleDate(day, month, year);
+
         if (isLastDayOfMonth(day, month, year)) {
-            date = moveAMonth(date);
+            result = moveAMonth(result);
             day = 1;
         } else {
             day++;
         }
 
-        date.setDay(day);
+        result.setDay(day);
 
-        return date;
+        return result;
+    }
+
+    public static SimpleDate moveDayBy(SimpleDate date, int days) {
+        SimpleDate result = date;
+
+        for (int i = 1; i <= days; i++) {
+            result = moveADay(result);
+        }
+
+        return result;
     }
 
     private static boolean isLastDayOfMonth(int day, int month, int year) {

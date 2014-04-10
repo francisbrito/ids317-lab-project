@@ -90,4 +90,85 @@ public class SimpleDateUtilityTest {
 
         assertEquals(expected, result);
     }
+
+    @Test
+    public void testMoveYearByShouldIncreaseADateByGivenYears() {
+        SimpleDate subject = new SimpleDate(1, 1, 1);
+        int years = 4;
+        SimpleDate expected = new SimpleDate(1, 1, 5);
+
+        SimpleDate result = SimpleDateUtility.moveYearBy(subject, years);
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testMoveMonthByShouldIncreaseADateByGivenMonths() {
+        SimpleDate subject = new SimpleDate(1, 1, 1);
+        int months = 7;
+        SimpleDate expected = new SimpleDate(1, 8, 1);
+
+        SimpleDate result = SimpleDateUtility.moveMonthBy(subject, months);
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testMoveMonthByShouldCarryOverIfGivenMonthsAreBeyondDecember() {
+        SimpleDate subject = new SimpleDate(1, 1, 1);
+        int months = 12;
+        SimpleDate expected = new SimpleDate(1, 1, 2);
+
+        SimpleDate result = SimpleDateUtility.moveMonthBy(subject, months);
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testMoveByDayIncreaseADateByGivenDays() {
+        SimpleDate subject = new SimpleDate(1, 1, 1);
+        int days = 10;
+        SimpleDate expected = new SimpleDate(11, 1, 1);
+
+        SimpleDate result = SimpleDateUtility.moveDayBy(subject, days);
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testMoveByDayCarryOverMonthsIfGivenDaysAreBeyondLastDayOfMonth() {
+        SimpleDate subject = new SimpleDate(1, 6, 1);
+        int days = 30;
+        SimpleDate expected = new SimpleDate(1, 7, 1);
+
+        SimpleDate result = SimpleDateUtility.moveDayBy(subject, days);
+
+        assertEquals(expected, result);
+
+        days = 70;
+        expected = new SimpleDate(10, 8, 1);
+
+        result = SimpleDateUtility.moveDayBy(subject, days);
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void testMoveDayByCarryOverYearsIfGivenDaysAreBeyondLastDayOfYear() {
+        SimpleDate subject = new SimpleDate(1, 1, 1);
+        int days = 365;
+        SimpleDate expected = new SimpleDate(1, 1, 2);
+
+        SimpleDate result = SimpleDateUtility.moveDayBy(subject, days);
+
+        assertEquals(expected, result);
+
+        subject = new SimpleDate(1, 1, 4);
+        days = 366;
+        expected = new SimpleDate(1, 1, 5);
+
+        result = SimpleDateUtility.moveDayBy(subject, days);
+
+        assertEquals(expected, result);
+    }
 }
